@@ -15,7 +15,7 @@ from datetime import datetime
 import argparse
 import inspect
 from colorama import Fore, Style
-from slackclient import SlackClient
+import slack
 
 PARSER = argparse.ArgumentParser(description='Show oldest N starred messages.')
 PARSER.add_argument('count', metavar='N', type=int,
@@ -39,7 +39,7 @@ def get_stars(self):
     Documentation says that the response should include the next cursor.
     It doesn't though.
     """
-    res = self.api_call("stars.list", count=200)
+    res = self.stars_list(count=200)
     stars = []
     if not res.get('ok'):
         print(inspect.currentframe().f_code.co_name)
@@ -52,7 +52,7 @@ def get_stars(self):
 
     while page_num <= page_sum:
         page_num += 1
-        res = self.api_call("stars.list", count=200, page=page_num)
+        res = self.stars_list(count=200, page=page_num)
         if not res.get('ok'):
             print(inspect.currentframe().f_code.co_name)
         else:
@@ -97,7 +97,7 @@ def output_of_the_schwifty_stuff(data):
 
 
 # Initialize the connection to the slackbot
-SLACK_CLIENT = SlackClient(SLACK_BOT_TOKEN)
+SLACK_CLIENT = slack.WebClient(token=SLACK_BOT_TOKEN)
 STARS = get_stars(SLACK_CLIENT)
 usr_input = ''
 if COUNT < 1:
