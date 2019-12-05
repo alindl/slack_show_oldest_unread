@@ -115,10 +115,11 @@ if STARS:
             print("\n\n")
         if COUNT == 2:
             while usr_input.lower() not in ['y', 'n']:
-                usr_input = input("Do you wanna just open the thing? [y/n] : ")
-                if usr_input.lower() == 'y':
+                usr_input = input("Do you wanna just open the thing? [Y/n] : ")
+                if usr_input.lower() == 'y' or '\n':
                     webbrowser.open(star.get('message').get('permalink') + "?thread_ts=" +
                                     star.get('message').get('ts') +
                                     "&cid=" + star.get('channel'))
+                    break
                 elif usr_input.lower() != 'n':
                     print("Instructions. Can you read them?")
