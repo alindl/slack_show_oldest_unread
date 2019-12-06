@@ -63,7 +63,7 @@ def get_stars(self):
     return stars
 
 
-def output_of_the_schwifty_stuff(data):
+def output_of_the_schwifty_stuff(data, team_id):
     """
     Prints the good stuff, including pretty colors and sassy messages.
 
@@ -85,9 +85,13 @@ def output_of_the_schwifty_stuff(data):
     if delta.days <= 14:
         print(Fore.CYAN + "Two weeks or less? Are you going back to drinking coffee?")
 
-    print(Fore.BLUE + message.get('permalink') + "?thread_ts=" + message.get('ts') +
-          "&cid=" + data.get('channel'))
+    print(Fore.BLUE + "https://app.slack.com/client/" + team_id +"/" +
+          data.get('channel') + "/thread/" + data.get('channel') +
+          "-" + message.get('ts'))
     # What the veggy Slack? Why call the thing permalink and have it be useless?
+
+    # message.get('permalink') + "?thread_ts=" + message.get('ts') +
+    # "&cid=" + data.get('channel'))
 
     print(Fore.LIGHTWHITE_EX + "---------------------------------------------------")
     print(Style.RESET_ALL)
@@ -99,6 +103,9 @@ def output_of_the_schwifty_stuff(data):
 # Initialize the connection to the slackbot
 SLACK_CLIENT = slack.WebClient(token=SLACK_BOT_TOKEN)
 STARS = get_stars(SLACK_CLIENT)
+TEAM_INFO = SLACK_CLIENT.team_info()
+TEAM_ID = TEAM_INFO.get('team').get('id')
+# pylint: disable=C0103
 usr_input = ''
 if COUNT < 1:
     print("Don't be cheeky, this just spams your terminal.")
@@ -109,7 +116,7 @@ MAX_RUNS = len(STARS[:-COUNT:-1])
 if STARS:
     num_run = 0
     for star in STARS[:-COUNT:-1]:
-        output_of_the_schwifty_stuff(star)
+        output_of_the_schwifty_stuff(star, TEAM_ID)
         num_run += 1
         if num_run < MAX_RUNS:
             print("\n\n")
@@ -117,9 +124,12 @@ if STARS:
             while usr_input.lower() not in ['y', 'n']:
                 usr_input = input("Do you wanna just open the thing? [Y/n] : ")
                 if usr_input.lower() == 'y' or '\n':
-                    webbrowser.open(star.get('message').get('permalink') + "?thread_ts=" +
-                                    star.get('message').get('ts') +
-                                    "&cid=" + star.get('channel'))
+                    webbrowser.open("https://app.slack.com/client/" + TEAM_ID +
+                                    "/" + star.get('channel') + "/thread/" +
+                                    star.get('channel') + "-" + star.get('message').get('ts'))
+                    #star.get('message').get('permalink') + "?thread_ts=" +
+                    #star.get('message').get('ts') +
+                    #"&cid=" + star.get('channel'))
                     break
                 elif usr_input.lower() != 'n':
                     print("Instructions. Can you read them?")
