@@ -90,9 +90,6 @@ def output_of_the_schwifty_stuff(data, team_id):
           "-" + message.get('ts'))
     # What the veggy Slack? Why call the thing permalink and have it be useless?
 
-    # message.get('permalink') + "?thread_ts=" + message.get('ts') +
-    # "&cid=" + data.get('channel'))
-
     print(Fore.LIGHTWHITE_EX + "---------------------------------------------------")
     print(Style.RESET_ALL)
     print(message.get('text'), "\n")
@@ -127,9 +124,6 @@ if STARS:
                     webbrowser.open("https://app.slack.com/client/" + TEAM_ID +
                                     "/" + star.get('channel') + "/thread/" +
                                     star.get('channel') + "-" + star.get('message').get('ts'))
-                    #star.get('message').get('permalink') + "?thread_ts=" +
-                    #star.get('message').get('ts') +
-                    #"&cid=" + star.get('channel'))
                     break
                 elif usr_input.lower() != 'n':
                     print("Instructions. Can you read them?")
