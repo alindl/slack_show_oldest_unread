@@ -33,7 +33,7 @@ def get_stars(self):
     """
     Gets the list of starred messages.
 
-    API CALL conversations.history has a limit of 50 per minute
+    API CALL stars.list has a limit of 50 per minute
     It is used about twice, at most thrice
 
     Documentation says that the response should include the next cursor.
@@ -62,6 +62,20 @@ def get_stars(self):
                 stars.append(item)
     return stars
 
+def remove_stars(self, channel, timestamp):
+    """
+    Gets the list of starred messages.
+
+    API CALL stars.remove has a limit of 20 per minute
+    It is used about once
+
+    We need the channel and the timestamp, so we have a unique composite key
+    """
+    res = self.stars_remove(channel=channel, timestamp=timestamp)
+    if not res.get('ok'):
+        print(inspect.currentframe().f_code.co_name)
+        return False
+    return True
 
 def output_of_the_schwifty_stuff(data, team_id):
     """
@@ -120,10 +134,26 @@ if STARS:
         if COUNT == 2:
             while usr_input.lower() not in ['y', 'n']:
                 usr_input = input("Do you wanna just open the thing? [Y/n] : ")
-                if usr_input.lower() == 'y' or '\n':
+                if usr_input.lower() == 'n':
+                    print("Okay dude, no biggy.")
+                    break
+                elif usr_input.lower() == 'y' or '\n':
                     webbrowser.open("https://app.slack.com/client/" + TEAM_ID +
                                     "/" + star.get('channel') + "/thread/" +
                                     star.get('channel') + "-" + star.get('message').get('ts'))
+                    while usr_input.lower() not in ['y', 'n']:
+                        usr_input = input("Do you remove the star from the thing? [Y/n] : ")
+                        if usr_input.lower() == 'n':
+                            print("Okay dude, no biggy.")
+                            break
+                        elif usr_input.lower() == 'y' or '\n':
+                            if remove_stars(SLACK_CLIENT, star.get('channel'), star.get('message').get('ts')):
+                                print("Star removed")
+                                break 
+                            print("Error, star not removed, even though requested")
+                            break
+                        elif usr_input.lower() != 'n':
+                            print("Instructions. Can you read them?")
                     break
                 elif usr_input.lower() != 'n':
                     print("Instructions. Can you read them?")
