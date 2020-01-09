@@ -130,6 +130,7 @@ MAX_RUNS = len(STARS[:-COUNT:-1])
 if STARS:
     cycle = False
     if COUNT != 2 and input("Do you wanna cycle through them? [Y/n] : ").lower() != 'n':
+        print("\n\n")
         cycle = True
     num_run = 0
     for star in STARS[:-COUNT:-1]:
@@ -141,7 +142,7 @@ if STARS:
             while usr_input.lower() not in ['y', 'n']:
                 usr_input = input("Do you wanna just open the thing? [Y/n] : ")
                 if usr_input.lower() == 'n':
-                    print("Okay dude, no biggy.")
+                    print("Okay dude, no biggy.\n\n")
                     break
                 elif usr_input.lower() == 'y' or '\n':
                     webbrowser.open("https://app.slack.com/client/" + TEAM_ID +
@@ -150,14 +151,14 @@ if STARS:
                     while usr_input.lower() not in ['y', 'n']:
                         usr_input = input("Do you remove the star from the thing? [Y/n] : ")
                         if usr_input.lower() == 'n':
-                            print("Okay dude, no biggy.")
+                            print("Okay dude, no biggy.\n\n")
                             break
                         elif usr_input.lower() == 'y' or '\n':
                             if remove_stars(SLACK_CLIENT, star.get('channel'),
                                             star.get('message').get('ts')):
-                                print("Star removed")
+                                print("Star removed.\n\n")
                                 break 
-                            print("Error, star not removed, even though requested")
+                            print("Error, star not removed, even though requested.\n\n")
                             break
                         elif usr_input.lower() != 'n':
                             print("Instructions. Can you read them?")
