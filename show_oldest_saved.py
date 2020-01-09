@@ -8,6 +8,9 @@ permalink, the message and sassy teasing.
 Usage: python3 show_oldest_saved.py <number of oldest starred> <Slack token>
 """
 
+## TODO: Make working through the last one repeatable, going through the posts
+#        one at a time
+
 import webbrowser
 
 import sys
@@ -125,13 +128,16 @@ if COUNT == 1:
     print("Seriously, what did you expect?")
 MAX_RUNS = len(STARS[:-COUNT:-1])
 if STARS:
+    cycle = False
+    if COUNT != 2 and input("Do you wanna cycle through them? [Y/n] : ").lower() != 'n':
+        cycle = True
     num_run = 0
     for star in STARS[:-COUNT:-1]:
         output_of_the_schwifty_stuff(star, TEAM_ID)
         num_run += 1
         if num_run < MAX_RUNS:
             print("\n\n")
-        if COUNT == 2:
+        if COUNT == 2 or cycle == True:
             while usr_input.lower() not in ['y', 'n']:
                 usr_input = input("Do you wanna just open the thing? [Y/n] : ")
                 if usr_input.lower() == 'n':
@@ -147,7 +153,8 @@ if STARS:
                             print("Okay dude, no biggy.")
                             break
                         elif usr_input.lower() == 'y' or '\n':
-                            if remove_stars(SLACK_CLIENT, star.get('channel'), star.get('message').get('ts')):
+                            if remove_stars(SLACK_CLIENT, star.get('channel'),
+                                            star.get('message').get('ts')):
                                 print("Star removed")
                                 break 
                             print("Error, star not removed, even though requested")
