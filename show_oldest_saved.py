@@ -120,7 +120,6 @@ STARS = get_stars(SLACK_CLIENT)
 TEAM_INFO = SLACK_CLIENT.team_info()
 TEAM_ID = TEAM_INFO.get('team').get('id')
 # pylint: disable=C0103
-usr_input = ''
 if COUNT < 1:
     print("Don't be cheeky, this just spams your terminal.")
     sys.exit()
@@ -139,8 +138,10 @@ if STARS:
         if num_run < MAX_RUNS:
             print("\n\n")
         if COUNT == 2 or cycle == True:
+            usr_input = ''
             while usr_input.lower() not in ['y', 'n']:
                 usr_input = input("Do you wanna just open the thing? [Y/n] : ")
+                cycle_input = ''
                 if usr_input.lower() == 'n':
                     print("Okay dude, no biggy.\n\n")
                     break
@@ -148,19 +149,19 @@ if STARS:
                     webbrowser.open("https://app.slack.com/client/" + TEAM_ID +
                                     "/" + star.get('channel') + "/thread/" +
                                     star.get('channel') + "-" + star.get('message').get('ts'))
-                    while usr_input.lower() not in ['y', 'n']:
-                        usr_input = input("Do you remove the star from the thing? [Y/n] : ")
-                        if usr_input.lower() == 'n':
+                    while cycle_input.lower() not in ['y', 'n']:
+                        cycle_input = input("Do you remove the star from the thing? [Y/n] : ")
+                        if cycle_input.lower() == 'n':
                             print("Okay dude, no biggy.\n\n")
                             break
-                        elif usr_input.lower() == 'y' or '\n':
+                        elif cycle_input.lower() == 'y' or '\n':
                             if remove_stars(SLACK_CLIENT, star.get('channel'),
                                             star.get('message').get('ts')):
                                 print("Star removed.\n\n")
                                 break 
                             print("Error, star not removed, even though requested.\n\n")
                             break
-                        elif usr_input.lower() != 'n':
+                        elif cycle_input.lower() != 'n':
                             print("Instructions. Can you read them?")
                     break
                 elif usr_input.lower() != 'n':
