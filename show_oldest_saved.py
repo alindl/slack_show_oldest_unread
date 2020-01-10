@@ -8,9 +8,6 @@ permalink, the message and sassy teasing.
 Usage: python3 show_oldest_saved.py <number of oldest starred> <Slack token>
 """
 
-## TODO: Make working through the last one repeatable, going through the posts
-#        one at a time
-
 import webbrowser
 
 import sys
