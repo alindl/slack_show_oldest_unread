@@ -8,6 +8,14 @@ permalink, the message and sassy teasing.
 Usage: python3 show_oldest_saved.py <number of oldest starred> <Slack token>
 """
 
+
+# TODO implement features:
+#       - Have starred posts returned sorted by either
+#           - Time, chronological (now)
+#           - Lenght, word count
+#       - Have relative time scale for nasty comments
+#           (Delta between now and oldest)
+
 import webbrowser
 
 import sys
@@ -125,6 +133,7 @@ if COUNT == 1:
 MAX_RUNS = len(STARS[:-COUNT:-1])
 if STARS:
     cycle = False
+    print("You've got this many messages saved: ", len(STARS))
     if COUNT != 2 and input("Do you wanna cycle through them? [Y/n] : ").lower() != 'n':
         print("\n\n")
         cycle = True
